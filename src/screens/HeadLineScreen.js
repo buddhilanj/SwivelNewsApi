@@ -15,7 +15,7 @@ import {
   Text,
   StatusBar,
 } from 'react-native';
-import 'react-native-gesture-handler';
+import {connect} from 'react-redux';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 class HeadLineScreen extends React.Component {
