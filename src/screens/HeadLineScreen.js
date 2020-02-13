@@ -17,8 +17,13 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {getTopHeadlines} from '../actions';
 
 class HeadLineScreen extends React.Component {
+  componentDidMount() {
+    this.props.getTopHeadlines();
+  }
+
   render() {
     return (
       <>
@@ -29,7 +34,7 @@ class HeadLineScreen extends React.Component {
             style={styles.scrollView}>
             <View style={styles.body}>
               <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Step One</Text>
+                <Text style={styles.sectionTitle}>Top Headlines</Text>
               </View>
             </View>
           </ScrollView>
@@ -79,7 +84,9 @@ const styles = StyleSheet.create({
 });
 
 const mapDispatchToProps = dispatch => {
-  return {};
+  return {
+    getTopHeadlines: () => dispatch(getTopHeadlines()),
+  };
 };
 
 const mapStateToProps = ({NewsReducer}) => {
