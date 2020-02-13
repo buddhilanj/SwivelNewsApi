@@ -8,7 +8,7 @@ class NewsService {
     return response;
   };
 
-  getByTypeNews = async (type = NEWS_TYPES.BITCOIN) => {
+  getByTypeNews = async ({type = NEWS_TYPES.BITCOIN}) => {
     const url = getByTypeUrl({type});
     const response = await _requestFromServer(METHODS.GET, url);
     return response;

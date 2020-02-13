@@ -10,34 +10,57 @@ import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
+  FlatList,
   View,
   Text,
   StatusBar,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {getTopHeadlines} from '../actions';
+import {NewsRow} from '../components';
 
 class HeadLineScreen extends React.Component {
   componentDidMount() {
     this.props.getTopHeadlines();
   }
 
+  handleOnPress = item => {
+    console.log('Pressed', item); // create new screen and pass item as navigation props
+  };
+
+  renderRow = ({item}) => {
+    return (
+      <NewsRow
+        urlToImage={item.urlToImage}
+        title={item.title}
+        onPress={() => this.handleOnPress(item)}
+      />
+    );
+  };
+
   render() {
     return (
       <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-          <ScrollView
-            contentInsetAdjustmentBehavior="automatic"
-            style={styles.scrollView}>
-            <View style={styles.body}>
-              <View style={styles.sectionContainer}>
-                <Text style={styles.sectionTitle}>Top Headlines</Text>
-              </View>
+          <View style={styles.body}>
+            <View style={styles.sectionContainer}>
+              <Text style={styles.sectionTitle}>Top Headlines</Text>
             </View>
-          </ScrollView>
+            {this.props.headlinesError ? (
+              <View style={styles.error}>
+                <Text>{this.props.headlinesError}</Text>
+              </View>
+            ) : null}
+            <FlatList
+              data={this.props.headlines}
+              renderItem={this.renderRow}
+              keyExtractor={(item, index) => `${index}`}
+            />
+          </View>
         </SafeAreaView>
       </>
     );
@@ -70,16 +93,12 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: Colors.dark,
   },
-  highlight: {
-    fontWeight: '700',
+  row: {
+    flexDirection: 'row',
   },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  error: {
+    backgroundColor: 'red',
+    padding: 2,
   },
 });
 
@@ -90,8 +109,8 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = ({NewsReducer}) => {
-  const {headlines} = NewsReducer;
-  return {headlines};
+  const {headlines, headlinesError} = NewsReducer;
+  return {headlines, headlinesError};
 };
 
 export default connect(

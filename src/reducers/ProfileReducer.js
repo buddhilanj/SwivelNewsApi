@@ -1,6 +1,6 @@
 const initialState = {
   username:'Test',
-  custom: null,
+  custom: 'animal',
 };
 
 const ProfileReducer = (state = initialState, action) => {

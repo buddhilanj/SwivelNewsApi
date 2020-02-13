@@ -34,12 +34,10 @@ class RestClient {
    * @memberof RestClient
    */
   responseValidate(response) {
-    console.log('rest client response ', response);
     const {hasError, errorMessage} = this.statusHandler(response);
     if (hasError) {
       return {hasError: true, errorMessage: errorMessage};
     } else {
-      console.log('response validate', response.data.Data);
       return {
         hasError: false,
         errorMessage: '',
@@ -76,14 +74,14 @@ class RestClient {
       return {hasError: true, errorMessage: 'SERVER_ERROR'};
     } else {
       switch (responseObj.status) {
-        case 400:
+        case 401:
           console.log('status handler');
-          console.log(responseObj.data.status.Message);
+          console.log(responseObj.data);
           return {
             hasError: true,
-            errorMessage: responseObj.data.status.Message,
+            errorMessage: responseObj.data.message,
           };
-        case 401:
+        case 400:
           return {hasError: true, errorMessage: 'UNAUTHORIZED'};
         case 403:
           return {hasError: true, errorMessage: 'FORBIDDEN'};

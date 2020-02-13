@@ -18,17 +18,10 @@ class ApiHelperFunctions {
     if (hasError) {
       return {hasError: true, errorMessage: errorMessage};
     } else {
-      const {Code, Message} = !!responseObj.data.Status
-        ? responseObj.data.Status
-        : responseObj.data.status;
-      if (
-        (!!responseObj.data.Status && Code == 1) ||
-        (!!responseObj.data.status && Code == 0)
-      ) {
-        return {hasError: false, errorMessage: Message};
-      } else {
-        return {hasError: true, errorMessage: Message};
-      }
+      const {message} = !!responseObj.data.message
+        ? responseObj.data
+        : responseObj.data;
+      return {hasError: true, errorMessage: message};
     }
   }
 
