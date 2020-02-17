@@ -75,8 +75,6 @@ class RestClient {
     } else {
       switch (responseObj.status) {
         case 401:
-          console.log('status handler');
-          console.log(responseObj.data);
           return {
             hasError: true,
             errorMessage: responseObj.data.message,
@@ -88,10 +86,8 @@ class RestClient {
         case 404:
           return {hasError: true, errorMessage: 'NOT_FOUND'};
         case 500:
-          console.log('500 handler');
           return {hasError: true, errorMessage: 'SERVER_ERROR'};
         default:
-          console.log('default handler');
           return {hasError: false, errorMessage: ''};
       }
     }

@@ -19,16 +19,17 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {getTopHeadlines} from '../actions';
+import {getTopHeadlines, readProfileData} from '../actions';
 import {NewsRow} from '../components';
 
 class HeadLineScreen extends React.Component {
   componentDidMount() {
     this.props.getTopHeadlines();
+    this.props.readProfileData();
   }
 
   handleOnPress = item => {
-    console.log('Pressed', item); // create new screen and pass item as navigation props
+    this.props.navigation.navigate('News', {news: item});
   };
 
   renderRow = ({item}) => {
@@ -105,6 +106,7 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => {
   return {
     getTopHeadlines: () => dispatch(getTopHeadlines()),
+    readProfileData: () => dispatch(readProfileData()),
   };
 };
 

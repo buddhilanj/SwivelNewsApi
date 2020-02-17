@@ -22,15 +22,17 @@ import {NewsRow} from '../components';
 
 class CustomNewsScreen extends React.Component {
   componentDidMount() {
-    this.props.getEverythingNews({type: this.props.custom});
+    this.props.getEverythingNews({type: this.props.preference});
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.getEverythingNews({type: nextProps.custom});
+    if (this.props.preference != nextProps.preference) {
+      this.props.getEverythingNews({type: nextProps.preference});
+    }
   }
 
   handleOnPress = item => {
-    console.log('Pressed', item); // create new screen and pass item as navigation props
+    this.props.navigation.navigate('News', {news: item});
   };
 
   renderRow = ({item}) => {
@@ -44,7 +46,6 @@ class CustomNewsScreen extends React.Component {
   };
 
   render() {
-    console.log('prps', this.props);
     return (
       <>
         <StatusBar barStyle="dark-content" />
@@ -58,9 +59,11 @@ class CustomNewsScreen extends React.Component {
                 <Text>{this.props.customError}</Text>
               </View>
             ) : null}
-            {!this.props.custom ? (
+            {!this.props.preference || !this.props.username ? (
               <View style={styles.error}>
-                <Text>Please Set User Preference From Profile</Text>
+                <Text>
+                  Please Set User Preference And Username From Profile
+                </Text>
               </View>
             ) : (
               <FlatList
@@ -113,6 +116,10 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
+  error: {
+    backgroundColor: 'red',
+    padding: 2,
+  },
 });
 
 const mapDispatchToProps = dispatch => {
@@ -122,11 +129,11 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = ({ProfileReducer, NewsReducer}) => {
-  const {username, custom} = ProfileReducer;
+  const {username, preference} = ProfileReducer;
   const {customnews, customError} = NewsReducer;
   return {
     username,
-    custom,
+    preference,
     customnews,
     customError,
   };
